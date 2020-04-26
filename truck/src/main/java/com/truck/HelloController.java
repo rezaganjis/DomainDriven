@@ -1,6 +1,8 @@
 package com.truck;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
@@ -14,24 +16,12 @@ public class HelloController {
     NamedParameterJdbcTemplate jdbcTemplate;
 
     @RequestMapping("/")
-    String hello() {
-        return "Hello World!";
+    Container hello() {
+    	Container data=new Container();
+    	data.setName("reza");
+    	data.setId("");
+        return data;
     }
 
-    @Data
-    static class Result {
-        private final int left;
-        private final int right;
-        private final long answer;
-    }
 
-    // SQL sample
-    @RequestMapping("calc")
-    Result calc(@RequestParam int left, @RequestParam int right) {
-        MapSqlParameterSource source = new MapSqlParameterSource()
-                .addValue("left", left)
-                .addValue("right", right);
-        return jdbcTemplate.queryForObject("SELECT :left + :right AS answer", source,
-                (rs, rowNum) -> new Result(left, right, rs.getLong("answer")));
-    }
 }
